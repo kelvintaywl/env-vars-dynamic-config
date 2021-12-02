@@ -1,0 +1,25 @@
+version: 2.1
+
+parameters:
+  my_key:
+    type: string
+    default: 'foobar'
+  my_flag:
+    type: boolean
+    default: true
+
+jobs:
+  run_if_valid_key:
+    docker:
+      - image: cimg/base:stable
+    steps:
+      - run: echo "i am only run when my_key == 'new_key_in_town'"
+
+workflows:
+  continued:
+    when:
+      and: # All must be true to trigger
+        - equal: [ true, << pipeline.parameters.my_flag >> ]
+        - equal: [ "new_key_in_town", << pipeline.parameters.my_key >> ]
+    jobs:
+      - run_if_valid_key
