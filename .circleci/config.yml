@@ -10,4 +10,4 @@ workflows:
     jobs:
       - continuation/continue:
           configuration_path: .circleci/continued.yml
-          parameters: '{ "my_key": "${NEW_KEY}" }'
+          parameters: "{ \"my_key\": \"${NEW_KEY}\" }"
