@@ -4,10 +4,23 @@ setup: true
 
 orbs: 
   continuation: circleci/continuation@0.2.0
+  
+jobs:
+  custom_continue:
+    steps:
+      - checkout
+      - run:
+          name: Set up parameters for continuation in JSON file
+          command: |
+            echo "{ \"my_key\": \"${NEW_KEY}\" }" | jq -r . > parameters.json
+            
+            # to confirm
+            cat parameters.json
+      - continuation/continue:
+          configuration_path: .circleci/continued.yml
+          parameters: parameters.json
 
 workflows:
   main:
     jobs:
-      - continuation/continue:
-          configuration_path: .circleci/continued.yml
-          parameters: "{ \"my_key\": \"${NEW_KEY}\" }"
+      - custom_continue
